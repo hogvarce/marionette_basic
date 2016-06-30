@@ -1,0 +1,19 @@
+.search-block {
+    padding: 20px 0px;
+}
+.search-bar.form-control {
+    float: left;
+    width:calc(100% - 60px);
+}
+
+.thumb img{
+    width: 100%;
+}
+
+#list  li {
+    cursor: pointer;
+}
+
+#list .desc {
+    word-wrap: break-word;
+}

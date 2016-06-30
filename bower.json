@@ -1,0 +1,23 @@
+{
+  "name": "redux-simple-starter",
+  "description": "Simple starter package for Redux with React and Babel support",
+  "main": "index.js",
+  "authors": [
+    "hogvarce <hogvarce@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/StephenGrider/ReduxSimpleStarter",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone.marionette": "marionette#^2.4.7",
+    "jquery": "^2.2.4"
+  }
+}
