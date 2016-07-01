@@ -22,7 +22,12 @@ const Layout = Marionette.LayoutView.extend({
   onShow: function() {
     let formView = new FormView({model: this.model});
     let listView = new ListView({collection: this.collection});
-    let tableView = new TableView({collection: this.options.table});
+    let tableView = new TableView({
+        collection: this.options.table,
+        model: new Backbone.Model({
+          total: this.options.table.length
+        })
+    });
 
     this.showChildView('form', formView);
     this.showChildView('list', listView);
