@@ -1,6 +1,6 @@
 import Marionette from 'backbone.marionette';
 
-const ToDo = Marionette.LayoutView.extend({
+const ToDo = Marionette.ItemView.extend({
     className: 'list-group-item',
     tagName: 'li',
     template: require('../templates/todoitem.html')

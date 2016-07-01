@@ -1,6 +1,7 @@
 import Marionette from 'backbone.marionette';
 import FormView from './form';
 import ListView from './list';
+import TableView from './table';
 
 
 const Layout = Marionette.LayoutView.extend({
@@ -10,7 +11,8 @@ const Layout = Marionette.LayoutView.extend({
 
   regions: {
     form: '.form',
-    list: '.list'
+    list: '.list',
+    table: '.table'
   },
 
   collectionEvents: {
@@ -20,10 +22,11 @@ const Layout = Marionette.LayoutView.extend({
   onShow: function() {
     let formView = new FormView({model: this.model});
     let listView = new ListView({collection: this.collection});
-
+    let tableView = new TableView({collection: this.options.table});
 
     this.showChildView('form', formView);
     this.showChildView('list', listView);
+    this.showChildView('table', tableView);
   },
 
   onChildviewAddTodoItem: function(child) {
@@ -32,6 +35,7 @@ const Layout = Marionette.LayoutView.extend({
       text: child.ui.text.val()
     }, {validate: true});
     if (!this.model.isValid()) {
+        this.model.trigger('change');
         return;
     }
     let items = this.model.pick('assignee', 'text');
