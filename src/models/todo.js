@@ -5,9 +5,14 @@ const ToDoModel = Backbone.Model.extend({
     assignee: '',
     text: ''
   },
-
+  events: {
+    "validated:invalid": "invalid"
+  },
+  invalid: function(){
+      console.log('asd');
+  },
   validate: function(attrs) {
-    var errors = {};
+     let errors = {};
     var hasError = false;
     if (!attrs.assignee) {
       errors.assignee = 'assignee must be set';
