@@ -5,6 +5,8 @@ module.exports = {
   module: {
     loaders: [
       {test: /\.html$/, loader: 'underscore-template-loader'},
+      {test: /\.css$/, loader: 'style!css'},
+      {test: /\.scss$/, loader: 'style!css!sass'},
       {
           test: /\.js$/,
           exclude: /(node_modules|bower_components)/,

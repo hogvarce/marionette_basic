@@ -8,8 +8,8 @@ import ToDoModel from './models/todo';
 import Table from './views/table';
 
 let initialData = [
-  {assignee: 'Scott', text: 'Write a book about Marionette'},
-  {assignee: 'Andrew', text: 'Do some coding'}
+    {assignee: 'Scott', text: 'Write a book about Marionette'},
+    {assignee: 'Andrew', text: 'Do some coding'}
 ];
 
 let tableData = [
@@ -17,11 +17,17 @@ let tableData = [
     {name: 'Jane Doe', gender: 'female', nationality: 'USA', url: '/items/4'}
 ];
 
+let contacts = [
+    {name: 'John Smith', icon: 'boy.svg'},
+    {name: 'Jane Doe', icon: 'girl.svg'}
+];
+
 const app = new Marionette.Application({
   onStart: function(options) {
     let todo = new TodoView({
       collection: new Backbone.Collection(options.initialData),
       table: new Backbone.Collection(options.tableData),
+      contacts: new Backbone.Collection(options.contacts),
       model: new ToDoModel()
     });
 
@@ -32,5 +38,6 @@ const app = new Marionette.Application({
 
 app.start({
     initialData: initialData,
-    tableData: tableData
+    tableData: tableData,
+    contacts: contacts
 });

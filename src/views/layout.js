@@ -2,7 +2,7 @@ import Marionette from 'backbone.marionette';
 import FormView from './form';
 import ListView from './list';
 import TableView from './table';
-
+import ContactsView from './list_contacts';
 
 const Layout = Marionette.LayoutView.extend({
   el: '#main',
@@ -12,7 +12,8 @@ const Layout = Marionette.LayoutView.extend({
   regions: {
     form: '.form',
     list: '.list',
-    table: '.table'
+    table: '.table',
+    contacts: '.contacts'
   },
 
   collectionEvents: {
@@ -27,11 +28,15 @@ const Layout = Marionette.LayoutView.extend({
         model: new Backbone.Model({
           total: this.options.table.length
         })
-    });
+      });
+    let contactsView = new ContactsView({
+        collection: this.options.contacts
+      });
 
     this.showChildView('form', formView);
     this.showChildView('list', listView);
     this.showChildView('table', tableView);
+    this.showChildView('contacts', contactsView);
   },
 
   onChildviewAddTodoItem: function(child) {
@@ -40,19 +45,14 @@ const Layout = Marionette.LayoutView.extend({
       text: child.ui.text.val()
     }, {validate: true});
     if (!this.model.isValid()) {
-        this.model.trigger('change');
-        return;
+      return;
     }
     let items = this.model.pick('assignee', 'text');
     this.collection.add(items);
   },
 
   itemAdded: function() {
-    this.model.set({
-      assignee: '',
-      text: '',
-      errors: {}
-    });
+    this.model.clear();
   }
 });
 
