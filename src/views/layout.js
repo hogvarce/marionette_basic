@@ -1,59 +1,50 @@
 import Marionette from 'backbone.marionette';
-import FormView from './form';
-import ListView from './list';
-import TableView from './table';
-import ContactsView from './list_contacts';
 
-const Layout = Marionette.LayoutView.extend({
-  el: '#main',
+import List from './list';
+import Blog from './blog';
 
-  template: require('../templates/layout.html'),
+const LayoutView = Marionette.LayoutView.extend({
+  template: require('../templates/blog/layout.html'),
 
   regions: {
-    form: '.form',
-    list: '.list',
-    table: '.table',
-    contacts: '.contacts'
+    layout: '.layout-hook'
   },
 
-  collectionEvents: {
-    add: 'itemAdded'
+  onShowBlogList: function() {
+    let list = new List({collection: this.collection});
+    this.showChildView('layout', list);
+
+    /*  Remember - this only sets the fragment, so we can safely call this as
+        often as we like with no negative side-effects.
+    */
+    Backbone.history.navigate('blog/');
+
   },
 
-  onShow: function() {
-    let formView = new FormView({model: this.model});
-    let listView = new ListView({collection: this.collection});
-    let tableView = new TableView({
-        collection: this.options.table,
-        model: new Backbone.Model({
-          total: this.options.table.length
-        })
-      });
-    let contactsView = new ContactsView({
-        collection: this.options.contacts
-      });
-
-    this.showChildView('form', formView);
-    this.showChildView('list', listView);
-    this.showChildView('table', tableView);
-    this.showChildView('contacts', contactsView);
+  onShowBlogEntry: function(entry) {
+    let model = this.collection.get(entry);
+    this.showBlog(model);
   },
 
-  onChildviewAddTodoItem: function(child) {
-    this.model.set({
-      assignee: child.ui.assignee.val(),
-      text: child.ui.text.val()
-    }, {validate: true});
-    if (!this.model.isValid()) {
-      return;
-    }
-    let items = this.model.pick('assignee', 'text');
-    this.collection.add(items);
+  onChildviewSelectEntry: function(child, model) {
+    this.showBlog(model);
   },
 
-  itemAdded: function() {
-    this.model.clear();
+  /** Child-initiated alias to onShowBlogList */
+  onChildviewShowBlogList: function() {
+    this.triggerMethod('show:blog:list');
+  },
+
+  /** Share some simple logic from our subviews */
+  showBlog: function(blogModel) {
+    let blog = new Blog({model: blogModel});
+    this.showChildView('layout', blog);
+
+    /*  Remember - this only sets the fragment, so we can safely call this as
+        often as we like with no negative side-effects.
+    */
+    Backbone.history.navigate('blog/' + blog.model.id);
   }
 });
 
-export default Layout;
+export default LayoutView;

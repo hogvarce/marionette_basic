@@ -1,43 +1,37 @@
-require('bootstrap');
-
-import $ from 'jQuery';
-import Backbone from 'backbone';
 import Marionette from 'backbone.marionette';
-import TodoView  from './views/layout';
-import ToDoModel from './models/todo';
-import Table from './views/table';
+import Router from './router';
 
-let initialData = [
-    {assignee: 'Scott', text: 'Write a book about Marionette'},
-    {assignee: 'Andrew', text: 'Do some coding'}
-];
+let initialData = {
+  posts: [
+    {
+      author: 'Scott',
+      title: 'Why Marionette is amazing',
+      content: '...',
+      id: 42,
+      comments: [
+        {
+          author: 'Steve',
+          content: '...',
+          id: 56
+        }
+      ]
+    },
+    {
+      author: 'Andrew',
+      title: 'How to use Routers',
+      content: '...',
+      id: 17
+    }
+  ]
+};
 
-let tableData = [
-    {name: 'John Smith', gender: 'male', nationality: 'UK', url: '/items/1'},
-    {name: 'Jane Doe', gender: 'female', nationality: 'USA', url: '/items/4'}
-];
-
-let contacts = [
-    {name: 'John Smith', icon: 'boy.svg'},
-    {name: 'Jane Doe', icon: 'girl.svg'}
-];
-
-const app = new Marionette.Application({
+let App = new Marionette.Application({
   onStart: function(options) {
-    let todo = new TodoView({
-      collection: new Backbone.Collection(options.initialData),
-      table: new Backbone.Collection(options.tableData),
-      contacts: new Backbone.Collection(options.contacts),
-      model: new ToDoModel()
-    });
+    let router = new Router(options);
 
-    todo.render();
-    todo.triggerMethod('show');
+    /** Starts the URL handling framework */
+    Backbone.history.start();
   }
 });
 
-app.start({
-    initialData: initialData,
-    tableData: tableData,
-    contacts: contacts
-});
+App.start({initialData: initialData});

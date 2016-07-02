@@ -1,14 +1,21 @@
 import Marionette from 'backbone.marionette';
 
-const ToDo = Marionette.ItemView.extend({
-    className: 'list-group-item',
-    tagName: 'li',
-    template: require('../templates/todoitem.html')
+const Entry = Marionette.LayoutView.extend({
+  template: require('../templates/blog/item.html'),
+  tagName: 'li',
+
+  triggers: {
+    click: 'select:entry'
+  }
 });
 
-const TodoList = Marionette.CollectionView.extend({
+const BlogList = Marionette.CollectionView.extend({
+  childView: Entry,
   tagName: 'ul',
-  childView: ToDo
+
+  onChildviewSelectEntry: function(child, options) {
+    this.triggerMethod('select:entry', child.model);
+  }
 });
 
-export default TodoList;
+export default BlogList;
